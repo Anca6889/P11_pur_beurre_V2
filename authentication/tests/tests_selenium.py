@@ -1,10 +1,15 @@
 """This module will use selenium for testing with Google Chrome Navigator"""
-
+from P8_pur_beurre.settings import BASE_DIR
 from selenium import webdriver
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 import random
 import string
 import time
+
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--disable-gpu')
+chrome_options.add_argument('--window-size=1920x1080')
 
 
 class BrowserTests(StaticLiveServerTestCase):
@@ -13,7 +18,10 @@ class BrowserTests(StaticLiveServerTestCase):
     def setUp(self):
         """setup the webdriver with Google Chrome driver"""
 
-        self.driver = webdriver.Chrome(executable_path="chromedriver.exe")
+        self.driver = webdriver.Chrome(
+            executable_path=str(BASE_DIR / 'webdrivers' / 'chromedriver'),
+            options=chrome_options,
+        )
 
     def test_login_logout_signin(self):
         """This method will do all the actions, check comments below"""
@@ -24,7 +32,7 @@ class BrowserTests(StaticLiveServerTestCase):
         stringmail = (''.join(random.choice(letters) for i in range(10)))
 
         # go to main page
-        self.driver.get("http://127.0.0.1:8000/")
+        self.driver.get(self.live_server_url)
 
         # click on the registration page
         sign_in = self.driver.find_element_by_link_text("S'inscrire")
@@ -40,7 +48,7 @@ class BrowserTests(StaticLiveServerTestCase):
         time.sleep(2)
         self.driver.find_element_by_id("registration_button").click()
         time.sleep(2)
-        self.assertIn("http://127.0.0.1:8000/authentication/login/",
+        self.assertIn("{}/authentication/login".format(self.live_server_url),
                       self.driver.current_url)
 
         # click on logout
@@ -60,5 +68,5 @@ class BrowserTests(StaticLiveServerTestCase):
         time.sleep(2)
         self.driver.find_element_by_id("login_button").click()
         time.sleep(2)
-        self.assertIn("http://127.0.0.1:8000/authentication/login/",
+        self.assertIn("{}/authentication/login".format(self.live_server_url),
                       self.driver.current_url)
