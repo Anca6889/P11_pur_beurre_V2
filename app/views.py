@@ -49,6 +49,7 @@ class SearchResults(ListView):
         results = service.search_results_with_name(query)
         results = service.manage_sort_out_user_favorite_products(
             results, user=self.request.user)
+        results = service.calculate_medium_rate_of_all_users_for_one_product(results)
         return results
 
 

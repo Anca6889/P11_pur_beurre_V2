@@ -3,7 +3,7 @@
     This way alow a optimise refactoring and make it easier to unittest.
 """
 
-from app.models import Product, Category
+from app.models import Product, Category, Rating
 from django.db.models import Count
 from django.db.models import Q
 
@@ -96,3 +96,17 @@ class Service:
                 Q(product_name_fr__icontains=query)
             )
         )
+
+    def calculate_medium_rate_of_all_users_for_one_product(self, products):
+        """ Calculate the medium rate of all users """
+
+        for product in products:
+            if Rating.objects.filter(product_id=product.id):
+                rates = Rating.objects.values_list('rate', flat=True)
+                sum_of_rates = sum(rates)
+                number_of_rates = len(rates)
+                medium_rate = sum_of_rates/number_of_rates
+                product.medium_rate = round(medium_rate,1)
+                product.number_of_voters = number_of_rates
+        return products
+
