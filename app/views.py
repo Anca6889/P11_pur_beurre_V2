@@ -5,13 +5,14 @@ also the base templates. This module is mostly working with app/service.py
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from .models import Product
+from .models import Product, Rating
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 from app.service import Service
 from app.forms import RateForm
 from django.contrib import messages
 from django.urls import reverse
+from django.core.exceptions import PermissionDenied
 
 service = Service()  # Load all the necessary methods from service.py
 
@@ -49,7 +50,7 @@ class SearchResults(ListView):
         results = service.search_results_with_name(query)
         results = service.manage_sort_out_user_favorite_products(
             results, user=self.request.user)
-        results = service.calculate_medium_rate_of_all_users_for_one_product(results)
+        results = service.calculate_medium_rate_for_product_list(results)
         return results
 
 
@@ -77,6 +78,7 @@ def get_product_details(request, product_id):
     user = request.user
     product = service.manage_get_product(product_id)
     product = service.manage_sort_out_if_product_is_favorite(product, user)
+    product = service.calculate_medium_rate_of_one_product(product)
     context = service.manage_setup_get_product_details_context(product)
     return render(request, "app/product_details.html", context)
 
@@ -106,18 +108,24 @@ def rate(request, product_id):
 
     product = service.manage_get_product(product_id)
     user = request.user
+    user_review = Rating.objects.filter(product_id=product_id, user_id=request.user)
     url = reverse('product', kwargs={'product_id': product_id})
 
     if request.method == 'POST':
-        form = RateForm(request.POST)
-        if form.is_valid():
-            messages.success(
-                request, "Votre évaluation a bien été prise en compte !")
-            rate = form.save(commit=False)
-            rate.user = user
-            rate.product = product
-            rate.save()
+        if user_review:
+            messages.error(
+                request, "Vous avez déjà voté pour ce produit !")
             return HttpResponseRedirect(url)
+        else:
+            form = RateForm(request.POST)
+            if form.is_valid():
+                messages.success(
+                    request, "Votre évaluation a bien été prise en compte !")
+                rate = form.save(commit=False)
+                rate.user = user
+                rate.product = product
+                rate.save()
+                return HttpResponseRedirect(url)
     else:
         form = RateForm()
 

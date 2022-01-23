@@ -97,12 +97,13 @@ class Service:
             )
         )
 
-    def calculate_medium_rate_of_all_users_for_one_product(self, products):
+    def calculate_medium_rate_for_product_list(self, products):
         """ Calculate the medium rate of all users """
 
         for product in products:
             if Rating.objects.filter(product_id=product.id):
-                rates = Rating.objects.values_list('rate', flat=True)
+                rates = Rating.objects.filter(
+                    product_id=product.id).values_list('rate', flat=True)
                 sum_of_rates = sum(rates)
                 number_of_rates = len(rates)
                 medium_rate = sum_of_rates/number_of_rates
@@ -110,3 +111,15 @@ class Service:
                 product.number_of_voters = number_of_rates
         return products
 
+    def calculate_medium_rate_of_one_product(self, product):
+        """ Calculate the medium rate of all users """
+
+        if Rating.objects.filter(product_id=product.id):
+            rates = Rating.objects.filter(
+                product_id=product.id).values_list('rate', flat=True)
+            sum_of_rates = sum(rates)
+            number_of_rates = len(rates)
+            medium_rate = sum_of_rates/number_of_rates
+            product.medium_rate = round(medium_rate, 1)
+            product.number_of_voters = number_of_rates
+        return product
