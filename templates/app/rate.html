@@ -1,0 +1,48 @@
+{% extends "base/home.html" %}
+{% load static %}
+
+{% block body_content %}
+<section class="page-section"
+    style="background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url({% static 'assets/img/bg-product.jpg' %})">
+    <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center">
+        <div class="bg-white col-10 col-lg-6 rounded">
+            <div class="col-auto text-secondary mt-5 text-center">
+                <h4>Noter et commenter un produit</h4>
+                <h3 class="text-primary">{{ product.product_name_fr }}</h3>
+            </div>
+            <img class="card-img-top pt-3" src="{{ product.image }}" style="object-fit: contain; height: 20em" />
+            {% if product.nutriscore_grade == "a" %}
+            <div class="d-flex flex-row justify-content-center my-3">
+                <img src="/static/assets/img/A.png" WIDTH=200 HEIGHT=80 />
+            </div>
+            {% elif product.nutriscore_grade == "b" %}
+            <div class="d-flex flex-row justify-content-center my-3">
+                <img src="/static/assets/img/B.png" WIDTH=200 HEIGHT=80 />
+            </div>
+            {% elif product.nutriscore_grade == "c" %}
+            <div class="d-flex flex-row justify-content-center my-3">
+                <img src="/static/assets/img/C.png" WIDTH=200 HEIGHT=80 />
+            </div>
+            {% elif product.nutriscore_grade == "d" %}
+            <div class="d-flex flex-row justify-content-center my-3">
+                <img src="/static/assets/img/D.png" WIDTH=200 HEIGHT=80 />
+            </div>
+            {% else %}
+            <div class="d-flex flex-row justify-content-center my-3">
+                <img src="/static/assets/img/E.png" WIDTH=200 HEIGHT=80 />
+            </div>
+            {% endif %}
+        </div>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div class="my-3">
+                {{ form.rate }}
+            </div>
+            <div class="my-3">
+                {{ form.text }}
+            </div>
+            <input id="rate_button" type="submit" name="Rate" value="Valider" class="btn btn-primary mb-3">
+        </form>
+    </div>
+</section>
+{% endblock %}

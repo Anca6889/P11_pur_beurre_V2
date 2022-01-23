@@ -45,9 +45,10 @@ class SearchResults(ListView):
         """
 
         query = self.request.GET.get("search")
-        return Product.objects.filter(
-            Q(product_name_fr__icontains=query)
-        )
+        results = service.search_results_with_name(query)
+        results = service.manage_sort_out_user_favorite_products(
+            results, user=self.request.user)
+        return results
 
 
 def get_substitutes(request, product_id):
@@ -98,7 +99,7 @@ def favorites_list(request):
     context = service.manage_setup_favorites_list_context(favorites)
     return render(request, "app/favorites.html", context)
 
-def Rate(request, product_id):
+def rate(request, product_id):
     """Display the rating form"""
 
     product = service.manage_get_product(product_id)

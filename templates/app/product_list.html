@@ -45,6 +45,15 @@
                     <div class="text-secondary"> <em>{{ product.product_name_fr }}</em><br><br></div>
                 </div>
                 <div class="card-footer row">
+                    {% if user.is_authenticated %}
+                        {% if product.is_fav %}
+                        <a href="{% url 'add_or_remove_favorite' product.id %}" class="bi bi-heart-fill" style="font-size: 2rem" role="button"
+                            data-toggle="tooltip" data-placement="bottom" title="Retirer des favoris"></a>
+                        {% else %}
+                        <a href="{% url 'add_or_remove_favorite' product.id %}" class="bi bi-heart" style="font-size: 2rem" role="button"
+                            data-toggle="tooltip" data-placement="bottom" title="Ajouter aux favoris"></a>
+                        {% endif %}
+                    {% endif %}
                     <a href="{% url 'product' product.id %}" class="btn btn-outline-primary mt-2" role="button">Fiche
                         produit</a>
                     <a href="{% url 'substitutes' product.id %}" class="btn btn-outline-primary mt-2" role="button">Chercher un substitut</a>

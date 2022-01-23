@@ -5,6 +5,7 @@
 
 from app.models import Product, Category
 from django.db.models import Count
+from django.db.models import Q
 
 
 class Service:
@@ -86,3 +87,12 @@ class Service:
             product.favorites.remove(user.id)
         else:
             product.favorites.add(user.id)
+
+    def search_results_with_name(self, query):
+        """get results with research in search bar"""
+
+        return (
+            Product.objects.filter(
+                Q(product_name_fr__icontains=query)
+            )
+        )
