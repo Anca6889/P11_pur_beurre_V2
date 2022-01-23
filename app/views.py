@@ -10,6 +10,7 @@ from .models import Product
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 from app.service import Service
+from app.forms import RateForm
 
 service = Service()  # Load all the necessary methods from service.py
 
@@ -96,3 +97,27 @@ def favorites_list(request):
     favorites = service.manage_sort_out_user_favorite_products(favorites, user)
     context = service.manage_setup_favorites_list_context(favorites)
     return render(request, "app/favorites.html", context)
+
+def Rate(request, product_id):
+    """Display the rating form"""
+
+    product = service.manage_get_product(product_id)
+    user = request.user
+
+    if request.method == 'POST':
+        form = RateForm(request.POST)
+        if form.is_valid():
+            rate = form.save(commit=False)
+            rate.user = user
+            rate.product = product
+            rate.save()
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+    else:
+        form = RateForm()
+
+        context = {
+            'form' : form,
+            'product' : form,
+        }
+
+        return render(request, "app/rate.html", context)
