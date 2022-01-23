@@ -58,6 +58,10 @@
                 <div class="card-body">
                     <div class="text-primary"><br> {{ favorite.brands }} <br></div>
                     <div class="text-secondary"> <em>{{ favorite.product_name_fr }}</em><br><br></div>
+                    {% if favorite.medium_rate %}
+                    <div class="text-primary"><br> Note moyenne des utilisateurs {{ favorite.medium_rate }} / 5<br></div>
+                    <div class="text-secondary"> Noté par {{ favorite.number_of_voters }} utilisateur(s)</div>
+                    {% endif %}
                 </div>
                 <div class="card-footer row">
                     <a href="{% url 'rate' favorite.id %}" class="btn btn-outline-primary mt- bi bi-star-fill" role="button">&nbsp Evaluer ce

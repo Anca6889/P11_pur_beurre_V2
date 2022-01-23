@@ -100,6 +100,7 @@ def favorites_list(request):
     user = request.user
     favorites = user.favorites.all()
     favorites = service.manage_sort_out_user_favorite_products(favorites, user)
+    favorites = service.calculate_medium_rate_for_product_list(favorites)
     context = service.manage_setup_favorites_list_context(favorites)
     return render(request, "app/favorites.html", context)
 
