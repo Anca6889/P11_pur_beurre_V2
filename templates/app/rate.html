@@ -32,17 +32,19 @@
                 <img src="/static/assets/img/E.png" WIDTH=200 HEIGHT=80 />
             </div>
             {% endif %}
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="my-3">
+                    <p>Noter ce produit :</p>
+                    {{ form.rate }}
+                </div>
+                <div class="my-3">
+                    <p>Laisser un commentaire :</p>
+                    {{ form.text }}
+                </div>
+                <input id="rate_button" type="submit" name="Rate" value="Valider" class="btn btn-primary mb-3">
+            </form>
         </div>
-        <form method="POST" action="">
-            {% csrf_token %}
-            <div class="my-3">
-                {{ form.rate }}
-            </div>
-            <div class="my-3">
-                {{ form.text }}
-            </div>
-            <input id="rate_button" type="submit" name="Rate" value="Valider" class="btn btn-primary mb-3">
-        </form>
     </div>
 </section>
 {% endblock %}

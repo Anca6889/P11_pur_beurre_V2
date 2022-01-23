@@ -4,13 +4,14 @@ also the base templates. This module is mostly working with app/service.py
 """
 
 from django.shortcuts import render
-from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .models import Product
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 from app.service import Service
 from app.forms import RateForm
+from django.contrib import messages
+from django.urls import reverse
 
 service = Service()  # Load all the necessary methods from service.py
 
@@ -104,21 +105,24 @@ def rate(request, product_id):
 
     product = service.manage_get_product(product_id)
     user = request.user
+    url = reverse('product', kwargs={'product_id': product_id})
 
     if request.method == 'POST':
         form = RateForm(request.POST)
         if form.is_valid():
+            messages.success(
+                request, "Votre évaluation a bien été prise en compte !")
             rate = form.save(commit=False)
             rate.user = user
             rate.product = product
             rate.save()
-            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+            return HttpResponseRedirect(url)
     else:
         form = RateForm()
 
         context = {
             'form' : form,
-            'product' : form,
+            'product' : product,
         }
 
         return render(request, "app/rate.html", context)
