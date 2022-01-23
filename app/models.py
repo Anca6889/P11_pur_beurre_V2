@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from app.config import config as c
 
 
 class Category(models.Model):
@@ -27,3 +28,17 @@ class Product(models.Model):
 
     def __str__(self):
         return self.product_name_fr
+
+
+class Rating(models.Model):
+    """Table containing rates of users for products"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    text = models.TextField(max_length=3000, blank=True)
+    rate = models.PositiveSmallIntegerField(choices=c.RATE_CHOICES)
+    likes = models.PositiveIntegerField(default=0)
+    unlikes = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return self.user.username
