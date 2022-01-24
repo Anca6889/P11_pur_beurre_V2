@@ -64,8 +64,10 @@
                     {% endif %}
                 </div>
                 <div class="card-footer row">
-                    <a href="{% url 'rate' favorite.id %}" class="btn btn-outline-primary mt- bi bi-star-fill" role="button">&nbsp Evaluer ce
-                        produit </a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'rate' favorite.id %}" class="btn btn-outline-primary mt- bi bi-star-fill" role="button">&nbsp Evaluer ce
+                            produit </a>
+                    {% endif %}
                     <a href="{% url 'product' favorite.id %}" class="btn btn-outline-primary mt-2" role="button">Fiche
                         produit</a>
                         <a href="{% url 'substitutes' favorite.id %}" class="btn btn-outline-primary mt-2" role="button">Chercher un

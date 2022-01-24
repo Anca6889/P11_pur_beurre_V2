@@ -67,6 +67,7 @@ def get_substitutes(request, product_id):
         prod_to_replace, product_categories)
     substitutes = service.manage_sort_out_user_favorite_products(
         substitutes, user)
+    substitutes = service.calculate_medium_rate_for_product_list(substitutes)
     context = service.manage_setup_get_substitutes_context(
         prod_to_replace, substitutes)
     return render(request, "app/substitutes.html", context)
