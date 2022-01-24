@@ -37,8 +37,6 @@ class Rating(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     text = models.TextField(max_length=3000, blank=True)
     rate = models.PositiveSmallIntegerField(choices=c.RATE_CHOICES)
-    likes = models.PositiveIntegerField(default=0)
-    unlikes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.user.username
