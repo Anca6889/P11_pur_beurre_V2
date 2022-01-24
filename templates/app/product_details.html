@@ -81,6 +81,15 @@
                     substitut</a>
                 <a href="{{ product.url }}" class=" btn btn-outline-primary mx-3 my-2" role="button">Accéder à la fiche produit complète
                     sur Openfoodfacts</a>
+                <h3 class="text-primary"><br><br>Espace commentaires<br><br></h3>
+                {% if product.comments %}
+                {% for comment in product.comments %}
+                <div class="text-primary"> Ecrit par: {{ comment.username }}</div>
+                <div class="text-secondary mb-2">{{ comment.date }}</div>
+                <div class="text-secondary">{{ comment.text }}</div>
+                <div class="text-primary">note: {{ comment.rate }} / 5<br><br></div>
+                {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>

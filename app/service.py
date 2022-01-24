@@ -4,6 +4,7 @@
 """
 
 from app.models import Product, Category, Rating
+from django.contrib.auth.models import User
 from django.db.models import Count
 from django.db.models import Q
 
@@ -123,3 +124,15 @@ class Service:
             product.medium_rate = round(medium_rate, 1)
             product.number_of_voters = number_of_rates
         return product
+
+    def get_comments_of_users(self, product):
+        """Get the user comments for a product"""
+
+        if Rating.objects.filter(product_id=product.id):
+            comments = Rating.objects.filter(
+                product_id=product.id)
+            for comment in comments:
+                user = User.objects.get(pk=comment.user_id)
+                comment.username = user.username
+            product.comments = comments
+            return product

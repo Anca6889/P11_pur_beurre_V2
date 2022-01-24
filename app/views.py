@@ -80,6 +80,7 @@ def get_product_details(request, product_id):
     product = service.manage_get_product(product_id)
     product = service.manage_sort_out_if_product_is_favorite(product, user)
     product = service.calculate_medium_rate_of_one_product(product)
+    product = service.get_comments_of_users(product)
     context = service.manage_setup_get_product_details_context(product)
     return render(request, "app/product_details.html", context)
 
