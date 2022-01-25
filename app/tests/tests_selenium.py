@@ -3,6 +3,7 @@ from P8_pur_beurre.settings import BASE_DIR
 from selenium import webdriver
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 import time
+from unittest import skip
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless')
@@ -21,6 +22,7 @@ class BrowserTests(StaticLiveServerTestCase):
             options=chrome_options,
         )
 
+    @skip("Don't want to test")
     def test_search_product_and_legals(self):
         """This method will do all the actions, check comments below"""
 

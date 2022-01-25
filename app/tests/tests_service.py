@@ -2,7 +2,7 @@
 
 from django.test import TestCase
 from django.contrib.auth.models import User
-from app.models import Product, Category
+from app.models import Product, Category, Rating
 from app.service import Service
 
 service = Service()  # Load all the necessary methods from service.py
@@ -21,6 +21,13 @@ class ServiceTests(TestCase):
             id='1',
             username='Hello_test',
             email='hello.test@hellotest.com',
+            password='Coverate8462'
+        )
+
+        self.mock_user2 = User.objects.create(
+            id='2',
+            username='Hello_test2',
+            email='hello.test2@hellotest2.com',
             password='Coverate8462'
         )
 
@@ -57,6 +64,42 @@ class ServiceTests(TestCase):
         self.mock_category4 = Category.objects.create(
             id='4',
             name='testcategory4'
+        )
+
+        self.mock_rate1 = Rating.objects.create(
+            id='1',
+            date='2022-01-25 20:00:00',
+            text='A test comment',
+            rate='4',
+            product_id='1',
+            user_id='1'
+        )
+
+        self.mock_rate2 = Rating.objects.create(
+            id='2',
+            date='2022-01-25 20:00:02',
+            text='A 2nd test comment',
+            rate='2',
+            product_id='1',
+            user_id='2'
+        )
+
+        self.mock_rate3 = Rating.objects.create(
+            id='3',
+            date='2022-01-25 20:00:03',
+            text='A 3rd test comment',
+            rate='5',
+            product_id='2',
+            user_id='1'
+        )
+
+        self.mock_rate4 = Rating.objects.create(
+            id='4',
+            date='2022-01-25 20:00:04',
+            text='A 4th test comment',
+            rate='3',
+            product_id='2',
+            user_id='2'
         )
 
     def test_manage_get_product(self):
@@ -183,3 +226,41 @@ class ServiceTests(TestCase):
             self.mock_product2, self.mock_user)
         for value in self.mock_product.favorites.values():
             self.assertEqual(value, None)
+
+    def test_calculate_medium_rate_for_product_list(self):
+        """Test that the medium rate is correcly calculated """
+
+        list_of_product = [self.mock_product, self.mock_product2]
+        service.calculate_medium_rate_for_product_list(list_of_product)
+        self.assertEqual( self.mock_product.medium_rate, 3)
+        self.assertEqual(self.mock_product2.medium_rate, 4)
+
+    def test_calculate_medium_rate_of_one_product(self):
+        """Test that the medium rate is correcly calculated """
+
+        service.calculate_medium_rate_of_one_product(self.mock_product)
+        self.assertEqual(self.mock_product.medium_rate, 3)
+
+    def test_get_comments_of_users(self):
+        """Test the user comments"""
+
+        service.get_comments_of_users(self.mock_product)
+        comments = self.mock_product.comments
+
+        usernames = []
+        texts = []
+        Assertcomments = False
+        Assertusernames = False
+
+        for comment in comments:
+            texts.append(comment.text)
+            usernames.append(comment.username)
+
+        if 'A test comment' and 'A 2nd test comment' in texts:
+            Assertcomments = True
+
+        if 'Hello_test' and 'Hello_test2' in usernames:
+            Assertusernames = True
+
+        self.assertEqual(Assertcomments, True)
+        self.assertEqual(Assertusernames, True)

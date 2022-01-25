@@ -106,6 +106,8 @@ def favorites_list(request):
     context = service.manage_setup_favorites_list_context(favorites)
     return render(request, "app/favorites.html", context)
 
+
+@login_required()
 def rate(request, product_id):
     """Display the rating form"""
 

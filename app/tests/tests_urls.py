@@ -44,3 +44,7 @@ class UrlsTests(SimpleTestCase):
     def test_favorites_url_is_resolved(self):
         url = reverse("favorites",)
         self.assertEquals(resolve(url).func, views.favorites_list)
+
+    def test_rate_url_is_resolved(self):
+        url = reverse("rate", kwargs={"product_id": 1})
+        self.assertEquals(resolve(url).func, views.rate)

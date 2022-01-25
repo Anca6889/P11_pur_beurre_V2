@@ -1,17 +1,26 @@
 """This module test the models of app/models.py"""
 
 from django.test import TestCase
-from app.models import Product, Category
+from django.contrib.auth.models import User
+from app.models import Product, Category, Rating
 
 
 class Modelstests(TestCase):
     """
-    This class will mock a fake product and fake category and will tests if
+    This class will mock a fake product, fake user, fake rating
+    and fake category and will tests if
     all the atributes from the fake database are matching.
     """
 
     def setUp(self):
-        """Setup the two mocks"""
+        """Setup the four mocks"""
+
+        self.mock_user = User.objects.create(
+            id='1',
+            username='Hello_test',
+            email='hello.test@hellotest.com',
+            password='Coverate8462'
+        )
 
         self.mock_product = Product.objects.create(
             id='1',
@@ -26,6 +35,15 @@ class Modelstests(TestCase):
         self.mock_category = Category.objects.create(
             id='1',
             name='testcategory'
+        )
+
+        self.mock_rate1 = Rating.objects.create(
+            id='1',
+            date='2022-01-25 20:00:04',
+            text='A test comment',
+            rate='3',
+            product_id='1',
+            user_id='1'
         )
 
     def test_id_product(self):
@@ -81,3 +99,33 @@ class Modelstests(TestCase):
 
         result = self.mock_category.__str__()
         self.assertEqual(result, 'testcategory')
+
+    def test_id_rating(self):
+        """Test the id value of a rating"""
+
+        result = self.mock_rate1.id
+        self.assertEqual(result, 1)
+
+    def test_text_rating(self):
+        """Test the text value of a rating"""
+
+        result = self.mock_rate1.text
+        self.assertEqual(result, 'A test comment')
+
+    def test_text_rating(self):
+        """Test the rate value of a rating"""
+
+        result = self.mock_rate1.rate
+        self.assertEqual(result, '3')
+
+    def test_product_id_rating(self):
+        """Test the product_id value of a rating"""
+
+        result = self.mock_rate1.product_id
+        self.assertEqual(result, '1')
+
+    def test_user_id_rating(self):
+        """Test the user_id value of a rating"""
+
+        result = self.mock_rate1.user_id
+        self.assertEqual(result, '1')
