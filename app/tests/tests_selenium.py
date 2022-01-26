@@ -2,7 +2,6 @@
 from P8_pur_beurre.settings import BASE_DIR
 from selenium import webdriver
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-import time
 
 
 chrome_options = webdriver.ChromeOptions()

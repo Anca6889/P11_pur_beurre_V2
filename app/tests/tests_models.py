@@ -112,7 +112,7 @@ class Modelstests(TestCase):
         result = self.mock_rate1.text
         self.assertEqual(result, 'A test comment')
 
-    def test_text_rating(self):
+    def test_rate_rating(self):
         """Test the rate value of a rating"""
 
         result = self.mock_rate1.rate

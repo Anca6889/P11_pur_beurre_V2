@@ -232,7 +232,7 @@ class ServiceTests(TestCase):
 
         list_of_product = [self.mock_product, self.mock_product2]
         service.calculate_medium_rate_for_product_list(list_of_product)
-        self.assertEqual( self.mock_product.medium_rate, 3)
+        self.assertEqual(self.mock_product.medium_rate, 3)
         self.assertEqual(self.mock_product2.medium_rate, 4)
 
     def test_calculate_medium_rate_of_one_product(self):

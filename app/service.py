@@ -108,7 +108,7 @@ class Service:
                 sum_of_rates = sum(rates)
                 number_of_rates = len(rates)
                 medium_rate = sum_of_rates/number_of_rates
-                product.medium_rate = round(medium_rate,1)
+                product.medium_rate = round(medium_rate, 1)
                 product.number_of_voters = number_of_rates
         return products
 
@@ -135,4 +135,4 @@ class Service:
                 user = User.objects.get(pk=comment.user_id)
                 comment.username = user.username
             product.comments = comments
-            return product
+        return product

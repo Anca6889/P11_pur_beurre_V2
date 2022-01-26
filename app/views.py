@@ -12,7 +12,6 @@ from app.service import Service
 from app.forms import RateForm
 from django.contrib import messages
 from django.urls import reverse
-from django.core.exceptions import PermissionDenied
 
 service = Service()  # Load all the necessary methods from service.py
 
@@ -113,7 +112,8 @@ def rate(request, product_id):
 
     product = service.manage_get_product(product_id)
     user = request.user
-    user_review = Rating.objects.filter(product_id=product_id, user_id=request.user)
+    user_review = Rating.objects.filter(
+        product_id=product_id, user_id=request.user)
     url = reverse('product', kwargs={'product_id': product_id})
 
     if request.method == 'POST':
@@ -135,8 +135,8 @@ def rate(request, product_id):
         form = RateForm()
 
         context = {
-            'form' : form,
-            'product' : product,
+            'form': form,
+            'product': product,
         }
 
         return render(request, "app/rate.html", context)
