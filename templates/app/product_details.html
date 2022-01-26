@@ -74,7 +74,7 @@
                 <div class="text-secondary"> Noté par {{ product.number_of_voters }} utilisateur(s)<br><br></div>
                 {% endif %}
                 {% if user.is_authenticated %}
-                    <a href="{% url 'rate' product.id %}" class="btn btn-outline-primary mx-3 my-2 bi bi-star-fill" role="button">&nbsp Evaluer ce
+                    <a id="rate-button" href="{% url 'rate' product.id %}" class="btn btn-outline-primary mx-3 my-2 bi bi-star-fill" role="button">&nbsp Evaluer ce
                         produit </a>
                 {% endif %}
                 <a href="{% url 'substitutes' product.id %}" class="btn btn-outline-primary mx-3 my-2" role="button">Chercher un

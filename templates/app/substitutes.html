@@ -97,7 +97,7 @@
                 </div>
                 <div class="card-footer row">
                     {% if user.is_authenticated %}
-                        <a href="{% url 'rate' substitute.id %}" class="btn btn-outline-primary mt- bi bi-star-fill" role="button">&nbsp Evaluer
+                        <a id="rate-button" href="{% url 'rate' substitute.id %}" class="btn btn-outline-primary mt- bi bi-star-fill" role="button">&nbsp Evaluer
                             ce
                             produit </a>
                     {% endif %}
