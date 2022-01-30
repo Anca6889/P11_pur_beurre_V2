@@ -8,9 +8,9 @@ authentication/backend.py
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
 from django.contrib import messages
 from .forms import SignInForm, LoginForm
+from django.http import HttpResponseRedirect
 
 
 def sign_in(request):
@@ -28,7 +28,7 @@ def sign_in(request):
             user = form.save()
             login(request, user,
                   backend='authentication.backend.AuthenticationBackend')
-            return redirect(reverse('login'))
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
         else:
             print(form.errors)
             for field in form.errors:

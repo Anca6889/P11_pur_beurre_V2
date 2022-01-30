@@ -3,7 +3,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User
-from app.models import Product
+from app.models import Product, Rating
 
 
 class Viewstests(TestCase):
@@ -34,6 +34,15 @@ class Viewstests(TestCase):
             image='testimage'
         )
 
+        self.mock_rate1 = Rating.objects.create(
+            id='1',
+            date='2022-01-25 20:00:04',
+            text='A test comment',
+            rate='3',
+            product_id='1',
+            user_id='1'
+        )
+
         self.client = Client()
         self.main_url = reverse("main")
         self.legal_notice_url = reverse("legal_notice")
@@ -44,6 +53,7 @@ class Viewstests(TestCase):
                                                   args=[1])
         self.favorites_list_url = reverse("favorites")
         self.explore_products_url = reverse("product_list")+"?search=testname"
+        self.rate_url = reverse("rate", args=[1])
 
     def test_main_view(self):
         response = self.client.get(self.main_url)
@@ -85,3 +95,9 @@ class Viewstests(TestCase):
         response = self.client.get(self.explore_products_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "app/product_list.html")
+
+    def test_get_rate_view(self):
+        self.client.force_login(self.mock_user)
+        response = self.client.get(self.rate_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "app/rate.html")

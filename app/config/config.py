@@ -45,3 +45,11 @@ PAYLOAD = {
     "json": 1,
     "fields": FIELDS
 }
+
+RATE_CHOICES = [
+    (1, '1 - Mauvais'),
+    (2, '2 - Mediocre'),
+    (3, '3 - Moyen'),
+    (4, '4 - Bon'),
+    (5, '5 - Exellent')
+]

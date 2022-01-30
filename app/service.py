@@ -3,8 +3,10 @@
     This way alow a optimise refactoring and make it easier to unittest.
 """
 
-from app.models import Product, Category
+from app.models import Product, Category, Rating
+from django.contrib.auth.models import User
 from django.db.models import Count
+from django.db.models import Q
 
 
 class Service:
@@ -86,3 +88,51 @@ class Service:
             product.favorites.remove(user.id)
         else:
             product.favorites.add(user.id)
+
+    def search_results_with_name(self, query):
+        """get results with research in search bar"""
+
+        return (
+            Product.objects.filter(
+                Q(product_name_fr__icontains=query)
+            )
+        )
+
+    def calculate_medium_rate_for_product_list(self, products):
+        """ Calculate the medium rate of all users """
+
+        for product in products:
+            if Rating.objects.filter(product_id=product.id):
+                rates = Rating.objects.filter(
+                    product_id=product.id).values_list('rate', flat=True)
+                sum_of_rates = sum(rates)
+                number_of_rates = len(rates)
+                medium_rate = sum_of_rates/number_of_rates
+                product.medium_rate = round(medium_rate, 1)
+                product.number_of_voters = number_of_rates
+        return products
+
+    def calculate_medium_rate_of_one_product(self, product):
+        """ Calculate the medium rate of all users """
+
+        if Rating.objects.filter(product_id=product.id):
+            rates = Rating.objects.filter(
+                product_id=product.id).values_list('rate', flat=True)
+            sum_of_rates = sum(rates)
+            number_of_rates = len(rates)
+            medium_rate = sum_of_rates/number_of_rates
+            product.medium_rate = round(medium_rate, 1)
+            product.number_of_voters = number_of_rates
+        return product
+
+    def get_comments_of_users(self, product):
+        """Get the user comments for a product"""
+
+        if Rating.objects.filter(product_id=product.id):
+            comments = Rating.objects.filter(
+                product_id=product.id)
+            for comment in comments:
+                user = User.objects.get(pk=comment.user_id)
+                comment.username = user.username
+            product.comments = comments
+        return product

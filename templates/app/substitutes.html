@@ -50,47 +50,61 @@
         {% for substitute in substitutes %}
         <div class="col-lg-4 col-md-12 d-flex align-items-stretch">
             <div class="card mx-3 shadow p-3 mb-5 bg_white border-primary rounded flex-fill">
-                {% if substitute.nutriscore_grade == "a" %}
-                <div class="d-flex flex-row-reverse mb-1">
-                    <img src="/static/assets/img/A.png" WIDTH=100 HEIGHT=40 />
+                <div class="d-flex justify-content-between">
+                    {% if user.is_authenticated %}
+                        {% if substitute.is_fav %}
+                        <div class="d-flex justify-content-start">
+                            <a href="{% url 'add_or_remove_favorite' substitute.id %}" class="bi bi-heart-fill" style="font-size: 2rem"
+                                role="button" data-toggle="tooltip" data-placement="bottom" title="Retirer des favoris"></a>
+                        </div>
+                        {% else %}
+                        <div class="d-flex justify-content-start">
+                            <a href="{% url 'add_or_remove_favorite' substitute.id %}" class="bi bi-heart" style="font-size: 2rem"
+                            role="button" data-toggle="tooltip" data-placement="bottom" title="Ajouter aux favoris"></a>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                    {% if substitute.nutriscore_grade == "a" %}
+                    <div class="d-flex flex-row-reverse mb-1">
+                        <img src="/static/assets/img/A.png" WIDTH=100 HEIGHT=40 />
+                    </div>
+                    {% elif substitute.nutriscore_grade == "b" %}
+                    <div class="d-flex flex-row-reverse mb-1">
+                        <img src="/static/assets/img/B.png" WIDTH=100 HEIGHT=40 />
+                    </div>
+                    {% elif substitute.nutriscore_grade == "c" %}
+                    <div class="d-flex flex-row-reverse mb-1">
+                        <img src="/static/assets/img/C.png" WIDTH=100 HEIGHT=40 />
+                    </div>
+                    {% elif substitute.nutriscore_grade == "d" %}
+                    <div class="d-flex flex-row-reverse mb-1">
+                        <img src="/static/assets/img/D.png" WIDTH=100 HEIGHT=40 />
+                    </div>
+                    {% else %}
+                    <div class="d-flex flex-row-reverse mb-1">
+                        <img src="/static/assets/img/E.png" WIDTH=100 HEIGHT=40 />
+                    </div>
+                    {% endif %}
                 </div>
-                {% elif substitute.nutriscore_grade == "b" %}
-                <div class="d-flex flex-row-reverse mb-1">
-                    <img src="/static/assets/img/B.png" WIDTH=100 HEIGHT=40 />
-                </div>
-                {% elif substitute.nutriscore_grade == "c" %}
-                <div class="d-flex flex-row-reverse mb-1">
-                    <img src="/static/assets/img/C.png" WIDTH=100 HEIGHT=40 />
-                </div>
-                {% elif substitute.nutriscore_grade == "d" %}
-                <div class="d-flex flex-row-reverse mb-1">
-                    <img src="/static/assets/img/D.png" WIDTH=100 HEIGHT=40 />
-                </div>
-                {% else %}
-                <div class="d-flex flex-row-reverse mb-1">
-                    <img src="/static/assets/img/E.png" WIDTH=100 HEIGHT=40 />
-                </div>
-                {% endif %}
                 <img class="card-img-top" src="{{ substitute.image }}" style="object-fit: contain; height: 20em" />
                 <div class="card-body">
                     <div class="text-primary"><br> {{ substitute.brands }} <br></div>
+                    {% if substitute.medium_rate %}
+                    <div class="text-primary"><br> Note moyenne des utilisateurs {{ substitute.medium_rate }} / 5<br></div>
+                    <div class="text-secondary"> Noté par {{ substitute.number_of_voters }} utilisateur(s)</div>
+                    {% endif %}
                     <div class="text-secondary"> <em>{{ substitute.product_name_fr }}</em><br><br></div>
                 </div>
                 <div class="card-footer row">
                     {% if user.is_authenticated %}
-                        {% if substitute.is_fav %}
-                            <a href="{% url 'add_or_remove_favorite' substitute.id %}" class="bi bi-heart-fill" style="font-size: 2rem" role="button"
-                                data-toggle="tooltip" data-placement="bottom" title="Retirer des favoris"></a>
-                        {% else %}
-                            <a href="{% url 'add_or_remove_favorite' substitute.id %}" class="bi bi-heart" style="font-size: 2rem" role="button"
-                                data-toggle="tooltip" data-placement="bottom" title="Ajouter aux favoris"></a>
-                        {% endif %}
+                        <a id="rate-button" href="{% url 'rate' substitute.id %}" class="btn btn-outline-primary mt- bi bi-star-fill" role="button">&nbsp Evaluer
+                            ce
+                            produit </a>
                     {% endif %}
                     <a href="{% url 'product' substitute.id %}" class="btn btn-outline-primary mt-2" role="button">Fiche
                         produit</a>
                 </div>
             </div>
-
         </div>
         {% endfor %}
     </div>

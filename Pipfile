@@ -15,6 +15,7 @@ progress = "*"
 [dev-packages]
 selenium = "*"
 coverage = "*"
+tchappui-webdrivers = "*"
 
 [requires]
 python_version = "3.9"
