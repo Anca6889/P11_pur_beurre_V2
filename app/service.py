@@ -47,7 +47,7 @@ class Service:
                 product.is_fav = True
             else:
                 product.is_fav = False
-            return products
+        return products
 
     def manage_sort_out_if_product_is_favorite(self, product, user):
         """check if a single product is already in user's favorites list"""
