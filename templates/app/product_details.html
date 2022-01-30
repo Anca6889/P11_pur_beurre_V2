@@ -8,10 +8,10 @@
         <div class="bg-white col-10 col-lg-6 rounded">
             {% if user.is_authenticated %}
                 {% if product.is_fav %}
-                <a href="{% url 'add_or_remove_favorite' product.id %}" class="bi bi-heart-fill" style="font-size: 2rem" role="button"
+                <a href="{% url 'add_or_remove_favorite' product.id %}" class="bi bi-heart-fill mt-5" style="font-size: 4rem" role="button"
                     data-toggle="tooltip" data-placement="bottom" title="Retirer des favoris"></a>
                 {% else %}
-                <a href="{% url 'add_or_remove_favorite' product.id %}" class="bi bi-heart" style="font-size: 2rem" role="button"
+                <a href="{% url 'add_or_remove_favorite' product.id %}" class="bi bi-heart" style="font-size: 4rem" role="button"
                     data-toggle="tooltip" data-placement="bottom" title="Ajouter aux favoris"></a>
                 {% endif %}
             {% endif %}
@@ -68,11 +68,12 @@
                     <h5>{{ product.stores }} </h5>
                 </div>
             </div>
+            {% if product.medium_rate %}
+            <div class="badge bg-primary text-wrap mb-3" style="width: auto; height: auto; font-size: 1.5rem">{{ product.medium_rate }} / 5
+            </div>
+            <div class="text-secondary">{{ product.number_of_voters }} évaluation(s)</div>
+            {% endif %}
             <div class="d-flex flex-column py-3">
-                {% if product.medium_rate %}
-                <div class="text-primary"><br> Note moyenne des utilisateurs {{ product.medium_rate }} / 5<br></div>
-                <div class="text-secondary"> Noté par {{ product.number_of_voters }} utilisateur(s)<br><br></div>
-                {% endif %}
                 {% if user.is_authenticated %}
                     <a id="rate-button" href="{% url 'rate' product.id %}" class="btn btn-outline-primary mx-3 my-2 bi bi-star-fill" role="button">&nbsp Evaluer ce
                         produit </a>
@@ -84,10 +85,13 @@
                 <h3 class="text-primary"><br><br>Espace commentaires<br><br></h3>
                 {% if product.comments %}
                     {% for comment in product.comments %}
-                    <div class="text-primary"> Ecrit par: {{ comment.username }}</div>
-                    <div class="text-secondary mb-2">{{ comment.date }}</div>
-                    <div class="text-secondary">{{ comment.text }}</div>
-                    <div class="text-primary">note: {{ comment.rate }} / 5<br><br></div>
+                    <div class="row row-cols-auto">
+                        <div class="col-md_auto mx-2 badge bg-secondary text-wrap" style="width: auto; height: auto;">{{ comment.username }}</div>
+                        <div class="col-md_auto badge bg-primary text-wrap" style="width: auto; height: auto;"> {{ comment.rate }} / 5</div>
+                        <div class="col text-info mb-2">{{ comment.date }}</div>
+                    </div>
+                    <div class=" mt-2 mb-4 text-secondary">{{ comment.text }}</div>
+                    <span class="border-bottom mb-2"></span>
                     {% endfor %}
                 {% endif %}
             </div>

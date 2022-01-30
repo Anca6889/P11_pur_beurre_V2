@@ -89,11 +89,11 @@
                 <img class="card-img-top" src="{{ substitute.image }}" style="object-fit: contain; height: 20em" />
                 <div class="card-body">
                     <div class="text-primary"><br> {{ substitute.brands }} <br></div>
-                    {% if substitute.medium_rate %}
-                    <div class="text-primary"><br> Note moyenne des utilisateurs {{ substitute.medium_rate }} / 5<br></div>
-                    <div class="text-secondary"> Noté par {{ substitute.number_of_voters }} utilisateur(s)</div>
-                    {% endif %}
                     <div class="text-secondary"> <em>{{ substitute.product_name_fr }}</em><br><br></div>
+                    {% if substitute.medium_rate %}
+                    <div class="badge bg-primary text-wrap mb-2" style="width: auto; height: auto; font-size: 1.5rem">{{ substitute.medium_rate }} / 5</div>
+                    <div class="text-secondary">{{ substitute.number_of_voters }} évaluation(s)</div>
+                    {% endif %}
                 </div>
                 <div class="card-footer row">
                     {% if user.is_authenticated %}
