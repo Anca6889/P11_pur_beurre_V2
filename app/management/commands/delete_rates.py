@@ -1,3 +1,5 @@
+""" DELETE ALL RATES AND COMMENTS DON'T USE IN PRODUCTION !!! DEV ONLY """
+
 from django.core.management.base import BaseCommand
 from app.models import Rating
 
