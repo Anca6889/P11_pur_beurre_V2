@@ -42,6 +42,24 @@ class ServiceTests(TestCase):
             image='testimage2'
         )
 
+        self.mock_product3 = Product.objects.create(
+            id='3',
+            product_name_fr='testname3',
+            brands='testbrand3', nutriscore_grade="b",
+            stores='teststore3',
+            url='test3/url.com',
+            image='testimage3'
+        )
+
+        self.mock_product4 = Product.objects.create(
+            id='4',
+            product_name_fr='testname4',
+            brands='testbrand4', nutriscore_grade="c",
+            stores='teststore4',
+            url='test3/url.com',
+            image='testimage4'
+        )
+
         self.mock_category = Category.objects.create(
             id='1',
             name='testcategory'
@@ -102,11 +120,16 @@ class ServiceTests(TestCase):
         """
 
         self.mock_product.favorites.add("1")
-        products = [self.mock_product, self.mock_product2]
+        self.mock_product2.favorites.add("1")
+        self.mock_product4.favorites.add("1")
+        products = [self.mock_product, self.mock_product2,
+                    self.mock_product3, self.mock_product4]
         service.manage_sort_out_user_favorite_products(
             products, self.mock_user)
         self.assertEqual(self.mock_product.is_fav, True)
-        self.assertEqual(self.mock_product2.is_fav, False)
+        self.assertEqual(self.mock_product2.is_fav, True)
+        self.assertEqual(self.mock_product3.is_fav, False)
+        self.assertEqual(self.mock_product4.is_fav, True)
 
     def test_manage_setup_get_substitutes_context(self):
         """Test that the context of the method is correctly set"""
