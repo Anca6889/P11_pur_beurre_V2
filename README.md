@@ -2,8 +2,8 @@ Langues / Languages README:
 Si le texte est écrit normalement : Français  
 *If the text is written in italic : English*
 
-###V2.0 Nouveautés : Evaluer et commenter les produits !  
-###*V2.0 Features : Rate and comment the products !*
+### V2.0 Nouveautés : Evaluer et commenter les produits !  
+### *V2.0 Features : Rate and comment the products !*
 ____
 # PUR BEURRE, FIND AND REPLACE FOOD WITH HEALTHIER PRODUCTS (French)
 
